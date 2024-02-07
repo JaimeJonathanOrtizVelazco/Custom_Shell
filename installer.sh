@@ -25,7 +25,7 @@ install_Kitty(){
     read installKitty
     if test "$installKitty" = "y"; then
         printf "Installing Kitty"
-        curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
+        curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
         command cp -r ./configuration_files/kitty/. ~/.config/kitty
     fi
 }
@@ -104,10 +104,16 @@ install_Powerlevel10k(){
         command git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
         command cp -r ./fonts/. ~/Library/Fonts
     fi
+
+    # printf "Do you want to import predefined \"powerlevel10k\" configuration? "
+    # printf "Yes (y) , No (n) : " 
+    # read import_pl10k
+    # if [[ "$import_pl10k" == "y" ]]; then
+    #     command cp  ./configuration_files/p10k/.p10k.zsh ~/.p10k.zsh
+    # fi
 }
 
 main(){
-    install_Kitty
     install_Zsh_AutoSuggestions
     install_Zsh_Asyntax_Highlighting
     install_Zsh_Sudo
@@ -121,6 +127,7 @@ main(){
         install_Bat
     fi
     install_Powerlevel10k
+    install_Kitty
     echo "Please restart your shell"
 }
 
