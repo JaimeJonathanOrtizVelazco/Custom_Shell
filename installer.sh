@@ -11,12 +11,12 @@ detect_homebrew(){
         printf "Some of the following installations require Homebrew. Do you want to install it? "
         printf "Yes (y) , No (n) : "     
         read install_homebrew
-        if [[ "$install_homebrew" == "y"]]; then
+        if [[ "$install_homebrew" == "y" ]]; then
             printf "Installing HomeBrew" 
             command /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        else
+            SKIP_DEPENDENT_COMPONENTS="y"
         fi
-    else
-        SKIP_DEPENDENT_COMPONENTS="y"
     fi
 }
 install_Kitty(){
@@ -26,6 +26,7 @@ install_Kitty(){
     if test "$installKitty" = "y"; then
         printf "Installing Kitty"
         curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
+        command cp -r ./configuration_files/kitty/. ~/.config/kitty
     fi
 }
 
@@ -69,18 +70,41 @@ install_Zsh_Sudo(){
 install_LSDeluxe(){
     printf "Do you want to install \"lsd\"? "
     printf "Yes (y) , No (n) : " 
-    read install_zsh_sudo
+    read install_lsdeluxe
     # zsh-syntax-highlighting
-    if [[ "$install_zsh_sudo" == "y" && ! -e ~/.zsh/zsh-sudo/sudo.plugin.zsh ]]; then
-        if [[ ! -d ~/.zsh/zsh-sudo ]]; then
-        echo "zsh-sudo directory doesn't exist, creating new one"
-        command mkdir ~/.zsh/zsh-sudo
+    if [[ "$install_lsdeluxe" == "y" ]]; then
+        if [[ $OS == "macos" ]]; then
+            command brew install lsd
+        else
+            command pacman -S lsd
         fi
-        echo "Installing zsh-sudo"
-        curl -L -o ~/.zsh/zsh-sudo/sudo.plugin.zsh https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
     fi
 }
 
+install_Bat(){
+    printf "Do you want to install \"bat\"? "
+    printf "Yes (y) , No (n) : " 
+    read install_bat
+    # zsh-syntax-highlighting
+    if [[ "$install_bat" == "y" ]]; then
+        if [[ $OS == "macos" ]]; then
+            command brew install bat
+        else
+            command pacman -S bat
+        fi
+    fi
+}
+
+install_Powerlevel10k(){
+    printf "Do you want to install \"powerlevel10k\"? "
+    printf "Yes (y) , No (n) : " 
+    read install_powerlevel10k
+    # powerlevel10k
+    if [[ "$install_powerlevel10k" == "y" ]]; then
+        command git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+        command cp -r ./fonts/. ~/Library/Fonts
+    fi
+}
 
 main(){
     install_Kitty
@@ -93,8 +117,11 @@ main(){
     fi
 
     if [[ ! "$SKIP_DEPENDENT_COMPONENTS" == "y" ]]; then
-
+        install_LSDeluxe
+        install_Bat
     fi
+    install_Powerlevel10k
+    echo "Please restart your shell"
 }
 
 main "$@"
