@@ -97,6 +97,18 @@ install_Bat(){
     fi
 }
 
+install_Fzf(){
+    printf "> Do you want to install \"fzf\"? "
+    printf " Yes (y) , No (n) : " 
+    read install_fzf
+    # zsh-syntax-highlighting
+    if [[ "$install_fzf" == "y" ]]; then
+        echo "Installing fzf .:"
+        command git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        command ~/.fzf/install
+    fi
+}
+
 install_Powerlevel10k(){
     printf "> Do you want to install \"powerlevel10k\"? "
     printf " Yes (y) , No (n) : " 
@@ -136,6 +148,7 @@ main(){
         install_LSDeluxe
         install_Bat
     fi
+    install_Fzf
     install_Powerlevel10k
     install_Kitty
 
