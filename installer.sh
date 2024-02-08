@@ -103,14 +103,14 @@ install_Powerlevel10k(){
     if [[ "$install_powerlevel10k" == "y" ]]; then
         command git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
         command cp -r ./fonts/. ~/Library/Fonts
+        command cat ./configuration_files/.zshrc ~/.zshrc > ~/.zshrc_temp
+        echo "A temporal file has been created for powerlevel10k at : ~/.zshrc_temp"
+        echo "Please validate this file include all your previous .zshrc configurations"
+        echo "Execute this command to finish with the instalation:"
+        echo "  mv ~/.zshrc_temp ~/.zshrc   "
+        echo "Open a new Kitty shell to enjoy!"
     fi
 
-    # printf "Do you want to import predefined \"powerlevel10k\" configuration? "
-    # printf "Yes (y) , No (n) : " 
-    # read import_pl10k
-    # if [[ "$import_pl10k" == "y" ]]; then
-    #     command cp  ./configuration_files/p10k/.p10k.zsh ~/.p10k.zsh
-    # fi
 }
 
 main(){
@@ -126,9 +126,8 @@ main(){
         install_LSDeluxe
         install_Bat
     fi
-    install_Powerlevel10k
     install_Kitty
-    echo "Please restart your shell"
+    install_Powerlevel10k
 }
 
 main "$@"
