@@ -118,10 +118,10 @@ main(){
     install_Zsh_Asyntax_Highlighting
     install_Zsh_Sudo
     detect_os
+    SKIP_DEPENDENT_COMPONENTS="n"
     if [[ "$OS" == "macos" ]]; then
         detect_homebrew
     fi
-
     if [[ ! "$SKIP_DEPENDENT_COMPONENTS" == "y" ]]; then
         install_LSDeluxe
         install_Bat
