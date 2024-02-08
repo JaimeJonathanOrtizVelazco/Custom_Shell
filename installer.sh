@@ -26,7 +26,7 @@ install_Kitty(){
     if [[ "$installKitty" == "y" ]]; then
         printf "Installing Kitty .:"
         command cp -r ./configuration_files/kitty/. ~/.config/kitty
-        curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin 
+        curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
     fi
 }
 
